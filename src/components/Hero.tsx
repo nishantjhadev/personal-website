@@ -28,9 +28,7 @@ const Hero: React.FC = () => {
             <div className="relative mx-auto w-full rounded-lg shadow-lg bg-white p-4 max-w-md">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center">
-                  <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
-                    <i className="fas fa-user text-indigo-600"></i>
-                  </div>
+                  <img src="/profile_pic.jpg" alt="Profile" className="w-12 h-12 rounded-full object-cover border-2 border-indigo-200 shadow" />
                   <div className="ml-3">
                     <p className="text-sm font-medium text-gray-900">NISHANT JHA</p>
                     <p className="text-xs text-gray-500">PhD Computer Science</p>
