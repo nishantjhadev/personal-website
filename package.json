@@ -13,21 +13,44 @@
     "@chakra-ui/react": "^3.22.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-brands-svg-icons": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@tailwindcss/vite": "^4.1.11",
     "framer-motion": "^12.23.6",
-    "react": "^18.2.0",
+    "react": "^18.3.1",
     "react-dom": "^18.2.0",
     "react-icons": "^5.5.0"
   },
   "devDependencies": {
+    "@tailwindcss/cli": "^4.1.11",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.59.0",
     "@typescript-eslint/parser": "^5.59.0",
     "@vitejs/plugin-react-swc": "^3.0.0",
+    "autoprefixer": "^10.4.21",
     "eslint": "^8.38.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.11",
     "typescript": "^5.0.2",
     "vite": "^7.0.5"
-  }
+  },
+  "description": "Todo: Write readme for react + vite + wasmer edge starter guide",
+  "main": "postcss.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nishantjhadev/personal-website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nishantjhadev/personal-website/issues"
+  },
+  "homepage": "https://github.com/nishantjhadev/personal-website#readme"
 }
