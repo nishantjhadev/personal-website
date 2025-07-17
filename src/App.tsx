@@ -30,7 +30,7 @@ function App() {
         </p>
       </div>
       <p className="read-the-docs">
-        Click on the Vite, React and Wasmer Edge logos to learn more
+        Click on the Vite, React and Wasmer Edge logos to learn more about
       </p>
     </>
   );
