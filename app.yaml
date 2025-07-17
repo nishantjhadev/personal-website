@@ -1,5 +1,5 @@
----
 kind: wasmer.io/App.v0
-name: edge-react-starter
-app_id: da_8RjPIgtQUOqK
-package: wasmer/edge-react-starter@0.3.0
+name: personal-website
+owner: nishant_jha
+package: '.'
+app_id: da_R4qIGtmUqw5m
