@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 const Hero: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div className="gradient-bg pt-32 pb-16 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -61,13 +64,38 @@ const Hero: React.FC = () => {
                     <i className="fas fa-certificate mr-1"></i> PhD
                   </span>
                 </div>
-                <a 
-                  href="/Nishant_Jha_Resume_2025.pdf"
+                {/* Modal state */}
+                <button 
+                  onClick={() => setIsModalOpen(true)}
                   className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none"
-                  download
                 >
                   View Resume
-                </a>
+                </button>
+
+                {/* PDF Modal */}
+                {isModalOpen && (
+                  <div 
+                  className="fixed inset-0 z-50 overflow-auto bg-black flex items-center justify-center p-4"
+                  onClick={() => setIsModalOpen(false)}
+                  >
+                  <div 
+                    className="relative w-full max-w-4xl bg-white rounded-lg"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <button
+                    onClick={() => setIsModalOpen(false)}
+                    className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
+                    >
+                    <span className="text-2xl">×</span>
+                    </button>
+                    <iframe
+                    src="/Nishant_Jha_Resume_2025.pdf"
+                    className="w-full h-[80vh]"
+                    title="Resume PDF"
+                    />
+                  </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

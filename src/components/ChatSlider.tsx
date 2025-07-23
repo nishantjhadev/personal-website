@@ -13,7 +13,7 @@ const ChatSlider: React.FC<ChatSliderProps> = ({ isOpen, onClose }) => {
         className={`fixed inset-0 bg-black bg-opacity-50 z-[999] transition-opacity duration-500 ${
           isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
-        style={{ opacity: isOpen ? '0.4' : 'none' }}
+        style={{ opacity: isOpen ? '0.4' : '0' }}
         onClick={onClose}
       ></div>
       {/* Slider */}
