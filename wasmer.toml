@@ -1,10 +1,10 @@
 [package]
 name = "nishant_jha/personal-website"
-version = "0.3.1"
+version = "0.3.14"
 description = "Nishant Jha"
 
 [dependencies]
-"sharrattj/static-web-server" = "^1"
+
 
 [fs]
 public = "dist"

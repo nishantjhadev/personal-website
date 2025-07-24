@@ -1,38 +1,57 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import edgeLogo from "/edge.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import { useState } from "react"; 
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import About from './components/About';
+// import Expertise from './components/Expertise';
+import Publications from './components/Publications';
+import Contact from './components/Contact';
+import Footer from './components/Footer';
+import useSmoothScroll from './hooks/useSmoothScroll';
+import ChatSlider from "./components/ChatSlider";
+import ToolsPage from './components/Tools';
 
 function App() {
-  const [count, setCount] = useState(0);
+  useSmoothScroll();
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-        <a href="https://wasmer.io/products/edge" target="_blank">
-          <img src={edgeLogo} className="edge-logo" alt="Edge logo" />
-        </a>
+    <Router>
+      <div className="font-sans antialiased text-gray-800 bg-gray-50">
+        <Navbar />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <Hero />
+                <About />
+                {/* <Expertise /> */}
+                <Publications />
+                <Contact />
+                <Footer />
+
+                {/* Floating Chat Button */}
+                <div className="fixed bottom-8 right-8 z-50 flex flex-col items-center">
+                  <button
+                    onClick={() => setIsChatOpen(true)}
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-lg p-1 text-xl flex items-center justify-center"
+                    aria-label="Open Chat"
+                  >
+                    <img src="/profile_pic.jpg" alt="Chat" className="w-12 h-12 rounded-full object-cover border-2 border-white shadow" />
+                  </button>
+                  <span className="mt-2 text-xs font-medium text-indigo-700 bg-white bg-opacity-90 px-2 py-1 rounded shadow">Chat with me</span>
+                </div>
+
+                {/* Chat Slider */}
+                <ChatSlider isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
+              </>
+            }
+          />
+          <Route path="/tools" element={<ToolsPage />} />
+        </Routes>
       </div>
-      <h1>Vite + React + Wasmer Edge</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite, React and Wasmer Edge logos to learn more about
-      </p>
-    </>
+    </Router>
   );
 }
 

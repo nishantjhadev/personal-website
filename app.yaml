@@ -1,5 +1,5 @@
-kind: wasmer.io/App.v0
 name: personal-website
+app_id: da_R4qIGtmUqw5m
 owner: nishant_jha
 package: '.'
-app_id: da_R4qIGtmUqw5m
+kind: wasmer.io/App.v0

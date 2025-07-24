@@ -1,0 +1,122 @@
+.tech-badge {
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.tech-badge:hover {
+  transform: scale(1.05);
+}
+
+.gradient-bg {
+    background: linear-gradient(135deg, #4f46e5 0%, #2563eb 25%, #7c3aed 50%, #2563eb 75%, #4f46e5 100%);
+    background-size: 400% 400%;
+    animation: gradientAnimation 5s ease infinite;
+    position: relative;
+    overflow: hidden;
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+.publication-card:hover {
+    border-left: 4px solid #4f46e5;
+}
+.tech-badge {
+    transition: all 0.3s ease;
+}
+.tech-badge:hover {
+    transform: scale(1.05);
+}
+.wave-shape {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+}
+.wave-shape svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 150px;
+}
+.wave-shape .shape-fill {
+    fill: #FFFFFF;
+}
+
+.timeline-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.timeline-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+.bucket {
+  border: 1px solid #ccc;
+  padding: 10px;
+  min-height: 100px;
+  max-width: 300px;
+  margin-top: 20px;
+}
+.bucket li {
+  list-style: none;
+  padding: 5px;
+  background: #f0f0f0;
+  margin: 5px 0;
+}
+
+
+
+.restaurant-order {
+       max-width: 600px;
+       margin: 0 auto;
+       padding: 20px;
+       font-family: Arial, sans-serif;
+     }
+     .order-bucket {
+       border: 1px solid #ccc;
+       padding: 10px;
+       min-height: 100px;
+       margin: 20px 0;
+     }
+     .order-bucket ul {
+       list-style: none;
+       padding: 0;
+     }
+     .order-bucket li {
+       display: flex;
+       justify-content: space-between;
+       align-items: center;
+       padding: 5px;
+       background: #f0f0f0;
+       margin: 5px 0;
+     }
+     .error {
+       color: red;
+     }
+     button {
+       cursor: pointer;
+     }
+     button:disabled {
+       background-color: #cccccc;
+       cursor: not-allowed;
+     }
