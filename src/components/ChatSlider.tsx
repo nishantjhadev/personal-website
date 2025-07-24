@@ -88,8 +88,17 @@ const ChatSlider: React.FC<ChatSliderProps> = ({ isOpen, onClose }) => {
     }
   };
 
+  // Custom bounce animation for loading dots
+  const bounceKeyframes = `
+@keyframes chat-bounce {
+  0%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-8px); }
+}
+`;
+
   return (
     <>
+      <style>{bounceKeyframes}</style>
       {/* Backdrop */}
       <div
         className={`fixed inset-0 bg-black bg-opacity-50 z-[999] transition-opacity duration-500 ${
@@ -124,33 +133,52 @@ const ChatSlider: React.FC<ChatSliderProps> = ({ isOpen, onClose }) => {
         <div className="p-6 flex flex-col h-[calc(100%-72px)]">
           <div className="flex-1 rounded-lg overflow-y-auto bg-gray-50 p-4 space-y-4">
             {history.map((msg, i) => (
-              <div
-                key={i}
-                className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-              >
+              // Only render assistant bubble if it has content
+              (msg.role === 'assistant' && !msg.content.trim()) ? null : (
                 <div
-                  className={`text-sm px-3 py-2 rounded-2xl max-w-[75%] shadow-sm mb-1
-                    ${msg.role === "user"
-                      ? "bg-gradient-to-br from-blue-500 to-blue-400 text-white rounded-br-md rounded-tl-2xl rounded-tr-2xl"
-                      : "bg-gray-200 text-gray-900 rounded-bl-md rounded-tl-2xl rounded-tr-2xl"}
-                  `}
-                  style={{ fontSize: '0.85rem', lineHeight: '1.4' }}
+                  key={i}
+                  className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                 >
-                  {msg.role === 'assistant' ? (
-                    <ReactMarkdown>{msg.content}</ReactMarkdown>
-                  ) : (
-                    msg.content
-                  )}
+                  <div
+                    className={`text-sm px-3 py-2 rounded-2xl max-w-[75%] shadow-sm mb-1
+                      ${msg.role === "user"
+                        ? "bg-gradient-to-br from-blue-500 to-blue-400 text-white rounded-br-md rounded-tl-2xl rounded-tr-2xl"
+                        : "bg-gray-200 text-gray-900 rounded-bl-md rounded-tl-2xl rounded-tr-2xl"}
+                    `}
+                    style={{ fontSize: '0.85rem', lineHeight: '1.4' }}
+                  >
+                    {msg.role === 'assistant' ? (
+                      <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    ) : (
+                      msg.content
+                    )}
+                  </div>
                 </div>
-              </div>
+              )
             ))}
             {loading && !streamStarted && (
               <div className="flex justify-start">
                 <div className="text-sm px-3 py-2 rounded-2xl max-w-[75%] shadow-sm mb-1 bg-gray-200 text-gray-400 border flex items-center gap-2 rounded-bl-md rounded-tl-2xl rounded-tr-2xl" style={{ fontSize: '0.85rem', lineHeight: '1.4' }}>
-                  <span className="animate-bounce">●</span>
-                  <span className="animate-bounce delay-150">●</span>
-                  <span className="animate-bounce delay-300">●</span>
-                  <span className="ml-2">Assistant is typing...</span>
+                  <span style={{
+                    display: 'inline-block',
+                    fontSize: '1em',
+                    marginRight: '0.1em',
+                    animation: 'chat-bounce 1.2s infinite',
+                  }}>•</span>
+                  <span style={{
+                    display: 'inline-block',
+                    fontSize: '1em',
+                    marginRight: '0.1em',
+                    animation: 'chat-bounce 1.2s infinite',
+                    animationDelay: '0.2s',
+                  }}>•</span>
+                  <span style={{
+                    display: 'inline-block',
+                    fontSize: '1em',
+                    animation: 'chat-bounce 1.2s infinite',
+                    animationDelay: '0.4s',
+                  }}>•</span>
+                  <span className="ml-2"></span>
                 </div>
               </div>
             )}
