@@ -68,3 +68,55 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+
+.bucket {
+  border: 1px solid #ccc;
+  padding: 10px;
+  min-height: 100px;
+  max-width: 300px;
+  margin-top: 20px;
+}
+.bucket li {
+  list-style: none;
+  padding: 5px;
+  background: #f0f0f0;
+  margin: 5px 0;
+}
+
+
+
+.restaurant-order {
+       max-width: 600px;
+       margin: 0 auto;
+       padding: 20px;
+       font-family: Arial, sans-serif;
+     }
+     .order-bucket {
+       border: 1px solid #ccc;
+       padding: 10px;
+       min-height: 100px;
+       margin: 20px 0;
+     }
+     .order-bucket ul {
+       list-style: none;
+       padding: 0;
+     }
+     .order-bucket li {
+       display: flex;
+       justify-content: space-between;
+       align-items: center;
+       padding: 5px;
+       background: #f0f0f0;
+       margin: 5px 0;
+     }
+     .error {
+       color: red;
+     }
+     button {
+       cursor: pointer;
+     }
+     button:disabled {
+       background-color: #cccccc;
+       cursor: not-allowed;
+     }
