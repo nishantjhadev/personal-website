@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
+import ReactMarkdown from 'react-markdown';
 
 interface ChatSliderProps {
   isOpen: boolean;
@@ -6,6 +7,87 @@ interface ChatSliderProps {
 }
 
 const ChatSlider: React.FC<ChatSliderProps> = ({ isOpen, onClose }) => {
+  const [input, setInput] = useState("");
+  const [history, setHistory] = useState<{ role: "user" | "assistant"; content: string }[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [streamStarted, setStreamStarted] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [history]);
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
+
+  const sendMessage = async () => {
+    if (!input.trim() || loading) return;
+
+    const userMessage = input;
+    setInput("");
+    setLoading(true);
+    setStreamStarted(false);
+    setHistory(prev => [...prev, { role: "user", content: userMessage }]);
+
+    // Add a placeholder for the assistant's streaming message
+    setHistory(prev => [...prev, { role: "assistant", content: "" }]);
+
+    try {
+      const response = await fetch("https://personal-website-backend-sand.vercel.app/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: userMessage,
+          history: [...history, { role: "user", content: userMessage }],
+        }),
+      });
+
+      if (!response.body) throw new Error("No response body");
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let done = false;
+      let assistantMessage = "";
+
+      while (!done) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+        if (value) {
+          if (!streamStarted) setStreamStarted(true);
+          assistantMessage += decoder.decode(value, { stream: true });
+          setHistory(prev => {
+            // Update the last assistant message in history
+            const updated = [...prev];
+            // Find the last assistant message (should be the last item)
+            for (let i = updated.length - 1; i >= 0; i--) {
+              if (updated[i].role === "assistant") {
+                updated[i] = { ...updated[i], content: assistantMessage };
+                break;
+              }
+            }
+            return updated;
+          });
+        }
+      }
+    } catch (error) {
+      setHistory(prev => [...prev, { role: "assistant", content: "Sorry, I encountered an error." }]);
+      console.error("Error sending message:", error);
+    } finally {
+      setLoading(false);
+      setStreamStarted(false);
+    }
+  };
+
   return (
     <>
       {/* Backdrop */}
@@ -40,16 +122,57 @@ const ChatSlider: React.FC<ChatSliderProps> = ({ isOpen, onClose }) => {
         </div>
         {/* Content */}
         <div className="p-6 flex flex-col h-[calc(100%-72px)]">
-          <div className="flex-1 rounded-lg overflow-hidden">
-            <iframe
-              src="https://nishantjha101-career-conversations.hf.space"
-              frameBorder="0"
-              width="100%"
-              height="100%"
-              className="min-h-[500px] bg-gray-50"
-              title="Career Conversations AI"
-              style={{ minHeight: 500 }}
-            ></iframe>
+          <div className="flex-1 rounded-lg overflow-y-auto bg-gray-50 p-4 space-y-4">
+            {history.map((msg, i) => (
+              <div
+                key={i}
+                className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+              >
+                <div
+                  className={`text-sm px-3 py-2 rounded-2xl max-w-[75%] shadow-sm mb-1
+                    ${msg.role === "user"
+                      ? "bg-gradient-to-br from-blue-500 to-blue-400 text-white rounded-br-md rounded-tl-2xl rounded-tr-2xl"
+                      : "bg-gray-200 text-gray-900 rounded-bl-md rounded-tl-2xl rounded-tr-2xl"}
+                  `}
+                  style={{ fontSize: '0.85rem', lineHeight: '1.4' }}
+                >
+                  {msg.role === 'assistant' ? (
+                    <ReactMarkdown>{msg.content}</ReactMarkdown>
+                  ) : (
+                    msg.content
+                  )}
+                </div>
+              </div>
+            ))}
+            {loading && !streamStarted && (
+              <div className="flex justify-start">
+                <div className="text-sm px-3 py-2 rounded-2xl max-w-[75%] shadow-sm mb-1 bg-gray-200 text-gray-400 border flex items-center gap-2 rounded-bl-md rounded-tl-2xl rounded-tr-2xl" style={{ fontSize: '0.85rem', lineHeight: '1.4' }}>
+                  <span className="animate-bounce">●</span>
+                  <span className="animate-bounce delay-150">●</span>
+                  <span className="animate-bounce delay-300">●</span>
+                  <span className="ml-2">Assistant is typing...</span>
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+          <div className="mt-4 flex items-center gap-2">
+            <input
+              type="text"
+              className="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+              placeholder="Type your message..."
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              disabled={loading}
+            />
+            <button
+              onClick={sendMessage}
+              className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
+              disabled={loading || !input.trim()}
+            >
+              {loading ? "..." : "Send"}
+            </button>
           </div>
         </div>
       </div>

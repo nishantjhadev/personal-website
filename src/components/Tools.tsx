@@ -1,32 +1,25 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-
-interface Response {
-  message: string;
-}
+import { useState } from 'react';
 
 function ToolsPage() {
-  const [data, setData] = useState<Response | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [messages] = useState([
+    { role: 'user', content: 'Hello!' }
+  ]);
+  const [response, setResponse] = useState('');
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('https://nishant-personal-website-backend.wasmer.app/');
-        setData(response.data);
-      } catch (err) {
-        setError('Failed to fetch data');
-        console.error(err);
-      }
-    };
-    fetchData();
-  }, []);
+  async function sendMessage() {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages }),
+    });
+    const data = await res.json();
+    setResponse(data.choices?.[0]?.message?.content || 'No response');
+  }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1>React + Wasmer Go Backend</h1>
-      {data && <p>Backend says: {data.message}</p>}
-      {error && <p>Error: {error}</p>}
+    <div>
+      <button onClick={sendMessage}>Send Message</button>
+      <div>Response: {response}</div>
     </div>
   );
 }
